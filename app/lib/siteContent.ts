@@ -282,8 +282,11 @@ export type FooterNavLink = {
 /** Extra app routes when no dedicated CMS page exists in the list. */
 const EXTRA_FOOTER_NAV: { slug: string; pageType?: Page['pageType']; href: string; defaultName: string }[] = [
   { slug: 'testimonials', pageType: 'testimonials', href: TESTIMONIALS_ROUTE, defaultName: 'Testimonials' },
-  { slug: 'gallery', pageType: 'gallery', href: '/gallery', defaultName: 'Gallery' },
 ];
+
+function isGalleryFooterLink(page: Page, href: string): boolean {
+  return page.pageType === 'gallery' || href === '/gallery' || normalizePageSlug(page.slug) === 'gallery';
+}
 
 function findCmsPageForExtraNav(pages: Page[], extra: (typeof EXTRA_FOOTER_NAV)[number]): Page | undefined {
   return pages.find(
@@ -300,7 +303,7 @@ export function getFooterNavLinks(pages?: Page[]): FooterNavLink[] {
 
   for (const page of orderedPages) {
     const href = getPageHref(page);
-    if (seenHrefs.has(href)) continue;
+    if (seenHrefs.has(href) || isGalleryFooterLink(page, href)) continue;
     seenHrefs.add(href);
     links.push({ id: page._id, label: page.name.trim(), href });
   }

@@ -1,44 +1,17 @@
-import { Metadata } from 'next'
-import { generateMetadata as generatePageMetadata, getPageSeoData } from '@/app/lib/metadata'
-import { Site } from '@/app/lib/types'
-import api from '@/app/lib/fetch-api'
-import ServiceAreaClient from './ServiceAreaClient'
+import type { Metadata } from 'next';
+import { buildMetadataForServiceArea } from '@/app/lib/pageMetadata';
+import ServiceAreaClient from './ServiceAreaClient';
 
 interface ServiceAreaPageProps {
-  params: Promise<{ serviceSlug: string; areaSlug: string }>
+  params: Promise<{ serviceSlug: string; areaSlug: string }>;
 }
 
 export async function generateMetadata({ params }: ServiceAreaPageProps): Promise<Metadata> {
-  const { serviceSlug, areaSlug } = await params
-  
-  try {
-    // Fetch default site first
-    const defaultSiteResponse = await api.get('/public/sites/default')
-    
-    if (defaultSiteResponse.success && defaultSiteResponse.data) {
-      const site: Site = defaultSiteResponse.data
-      
-      // Try to fetch service area page by service and area
-      const serviceAreaResponse = await api.get(`/public/sites/${site.slug}/service-areas/by-service/${serviceSlug}/${areaSlug}`)
-      
-      if (serviceAreaResponse.success && serviceAreaResponse.data) {
-        const serviceAreaPage = serviceAreaResponse.data
-        return generatePageMetadata(getPageSeoData(serviceAreaPage), site)
-      }
-    }
-  } catch (error) {
-    console.log('Service area page not found in API, using fallback metadata')
-  }
-  
-  // Fallback metadata for the area
-  const areaName = areaSlug ? areaSlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'Service Area';
-  return {
-    title: `${areaName} - Construction Services`,
-    description: `Professional construction and renovation services in ${areaName}. Contact us for all your building needs.`,
-  }
+  const { serviceSlug, areaSlug } = await params;
+  return buildMetadataForServiceArea(serviceSlug, areaSlug);
 }
 
 export default async function ServiceAreaPage({ params }: ServiceAreaPageProps) {
-  const { serviceSlug, areaSlug } = await params
-  return <ServiceAreaClient serviceSlug={serviceSlug} areaSlug={areaSlug} />
+  const { serviceSlug, areaSlug } = await params;
+  return <ServiceAreaClient serviceSlug={serviceSlug} areaSlug={areaSlug} />;
 }

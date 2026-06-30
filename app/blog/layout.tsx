@@ -2,7 +2,9 @@ import type { Metadata } from 'next';
 import { buildMetadataForPageType } from '@/app/lib/pageMetadata';
 
 export async function generateMetadata(): Promise<Metadata> {
-  return buildMetadataForPageType('home', '/');
+  return buildMetadataForPageType('blog-list', '/blog');
 }
 
-export { default } from './HomeClient';
+export default function BlogLayout({ children }: { children: React.ReactNode }) {
+  return children;
+}

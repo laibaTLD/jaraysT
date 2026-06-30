@@ -11,7 +11,7 @@ import { tiptapToText } from '@/app/lib/seo';
 
 type GalleryImage = {
   id: string;
-  title: string;
+  caption: string;
   altText: string;
   imageUrl: string;
 };
@@ -19,31 +19,31 @@ type GalleryImage = {
 const FALLBACK_GALLERY_IMAGES: GalleryImage[] = [
   {
     id: 'fallback-1',
-    title: 'Morning Meditation',
+    caption: '',
     altText: 'Person meditating at sunrise',
     imageUrl: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1200',
   },
   {
     id: 'fallback-2',
-    title: 'Yoga Practice',
+    caption: '',
     altText: 'Yoga pose in nature',
     imageUrl: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800',
   },
   {
     id: 'fallback-3',
-    title: 'Spa Relaxation',
+    caption: '',
     altText: 'Spa stones and candles',
     imageUrl: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800',
   },
   {
     id: 'fallback-4',
-    title: 'Mindful Breathing',
+    caption: '',
     altText: 'Person practicing breathing exercises',
     imageUrl: 'https://images.unsplash.com/photo-1515377909023-d2a60a1b8a26?w=800',
   },
   {
     id: 'fallback-5',
-    title: 'Nature Therapy',
+    caption: '',
     altText: 'Peaceful nature scene',
     imageUrl: 'https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?w=800',
   },
@@ -68,8 +68,8 @@ function normalizeGalleryImages(gallerySection?: Page['gallerySection']): Galler
         const caption = tiptapToText(img.caption);
         return {
           id: `gallery-${index}`,
-          title: caption || `Gallery image ${index + 1}`,
-          altText: img.altText?.trim() || caption || 'Gallery image',
+          caption,
+          altText: img.altText?.trim() || caption || '',
           imageUrl: getImageSrc(img.url),
         };
       }) ?? [];
@@ -118,7 +118,7 @@ function GalleryTile({ image, index, total, visible, onOpen }: GalleryTileProps)
         visible ? 'opacity-100 scale-100' : 'opacity-0 scale-[0.97]'
       )}
       style={{ transitionDelay: `${index * 80}ms` }}
-      aria-label={`View ${image.title}`}
+      aria-label={image.altText ? `View ${image.altText}` : 'View image'}
     >
       <OptimizedImage
         src={image.imageUrl}
@@ -129,24 +129,6 @@ function GalleryTile({ image, index, total, visible, onOpen }: GalleryTileProps)
         }
         className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
       />
-      <div className="absolute inset-x-0 bottom-0 translate-y-2 p-4 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100 sm:p-5">
-        <span
-          className="mb-2 inline-block rounded-full px-3 py-1 text-[10px] font-medium uppercase tracking-widest backdrop-blur-sm"
-          style={{
-            backgroundColor: 'color-mix(in srgb, var(--wb-card-bg-light) 85%, transparent)',
-            color: colors.mainText,
-            fontFamily: fonts.body,
-          }}
-        >
-          {String(index + 1).padStart(2, '0')}
-        </span>
-        <p
-          className="text-sm font-semibold text-white drop-shadow-md sm:text-base"
-          style={{ fontFamily: fonts.heading }}
-        >
-          {image.title}
-        </p>
-      </div>
       <div
         className="absolute top-3 right-3 flex h-9 w-9 items-center justify-center rounded-full opacity-0 backdrop-blur-md transition-all duration-300 group-hover:opacity-100"
         style={{ backgroundColor: 'color-mix(in srgb, var(--wb-card-bg-light) 90%, transparent)' }}
@@ -197,7 +179,7 @@ function GalleryLightbox({
       className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-8"
       role="dialog"
       aria-modal="true"
-      aria-label={image.title}
+      aria-label={image.altText || 'Gallery image'}
     >
       <button
         type="button"
@@ -217,17 +199,8 @@ function GalleryLightbox({
             priority
           />
         </div>
-        <div
-          className="mt-4 flex items-center justify-between gap-4 rounded-2xl px-5 py-4 backdrop-blur-md"
-          style={{
-            backgroundColor: 'color-mix(in srgb, var(--wb-card-bg-light) 95%, transparent)',
-          }}
-        >
-          <p className="text-lg font-semibold sm:text-xl" style={{ fontFamily: fonts.heading, color: colors.mainText }}>
-            {image.title}
-          </p>
-          <div className="flex shrink-0 items-center gap-2">
-            {hasPrev && (
+        <div className="mt-4 flex items-center justify-end gap-2">
+          {hasPrev && (
               <button
                 type="button"
                 onClick={onPrev}
@@ -264,7 +237,6 @@ function GalleryLightbox({
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
-          </div>
         </div>
       </div>
     </div>

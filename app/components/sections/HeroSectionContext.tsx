@@ -109,8 +109,8 @@ export function HeroSectionContext({ hero, page, className }: HeroSectionContext
             {ctaButton && (
               <a
                 href={ctaButton.href}
-                className={`${manrope.className} inline-block px-8 py-4 text-white font-medium text-sm tracking-wide uppercase transition-all duration-500 hover:-translate-y-2 hover:scale-105 group relative overflow-hidden ${descriptionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-                style={{ backgroundColor: primary, transitionDelay: '700ms' }}
+                className={`${manrope.className} inline-block px-8 py-4 font-medium text-sm tracking-wide uppercase transition-all duration-500 hover:-translate-y-2 hover:scale-105 group relative overflow-hidden ${descriptionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+                style={{ backgroundColor: primary, color: colors.buttonText, transitionDelay: '700ms' }}
               >
                 <span className="relative z-10 group-hover:animate-pulse">{ctaButton.label} →</span>
                 <div

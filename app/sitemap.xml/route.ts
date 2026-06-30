@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import type { BlogPost, Page, Service } from '@/app/lib/types';
 import {
   BUILDER_NO_CACHE_HEADERS,
   fetchPublicCollection,
@@ -21,9 +22,9 @@ export async function GET() {
 
     const site = await fetchPublicSite(siteSlug);
     const [pages, services, blogPosts] = await Promise.all([
-      fetchPublicCollection(`/public/sites/${siteSlug}/pages`),
-      fetchPublicCollection(`/public/sites/${siteSlug}/services`),
-      fetchPublicCollection(`/public/sites/${siteSlug}/blog`).catch(() => [] as unknown[]),
+      fetchPublicCollection<Page>(`/public/sites/${siteSlug}/pages`),
+      fetchPublicCollection<Service>(`/public/sites/${siteSlug}/services`),
+      fetchPublicCollection<BlogPost>(`/public/sites/${siteSlug}/blog`).catch(() => [] as BlogPost[]),
     ]);
 
     const sitemapXml = resolveSitemapXml(site, baseUrl, pages, services, blogPosts);

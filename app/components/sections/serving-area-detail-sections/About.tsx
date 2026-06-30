@@ -213,7 +213,7 @@ export const About: React.FC<AboutProps> = ({ about, className }) => {
                   className="group inline-flex items-center gap-2 rounded-full px-8 py-3.5 text-xs font-medium uppercase tracking-[0.2em] transition-opacity hover:opacity-90"
                   style={{
                     backgroundColor: colors.primaryButton,
-                    color: 'var(--wb-text-on-dark, #fff)',
+                    color: colors.buttonText,
                     fontFamily: fonts.body,
                   }}
                 >
@@ -228,7 +228,7 @@ export const About: React.FC<AboutProps> = ({ about, className }) => {
                   className="group inline-flex items-center gap-2 rounded-full px-8 py-3.5 text-xs font-medium uppercase tracking-[0.2em] transition-opacity hover:opacity-90"
                   style={{
                     backgroundColor: colors.primaryButton,
-                    color: 'var(--wb-text-on-dark, #fff)',
+                    color: colors.buttonText,
                     fontFamily: fonts.body,
                   }}
                 >

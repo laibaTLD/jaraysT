@@ -94,7 +94,7 @@ export const ServiceContactFormSection: React.FC<ServiceContactFormSectionProps>
         <button
           onClick={() => setIsFormOpen(true)}
           className="group relative flex items-center justify-between px-10 py-6 w-full max-w-[320px] transition-all duration-500 overflow-hidden text-left"
-          style={{ backgroundColor: themeColors.primaryButton, color: '#FFFFFF' }}
+          style={{ backgroundColor: themeColors.primaryButton, color: themeColors.buttonText }}
         >
           <span className="text-[11px] font-bold tracking-[0.4em] uppercase z-10">Get a Quote</span>
           <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform z-10" />
@@ -133,7 +133,7 @@ export const ServiceContactFormSection: React.FC<ServiceContactFormSectionProps>
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group relative flex items-center justify-between px-8 py-4 w-full max-w-[220px] transition-all duration-500 overflow-hidden mt-8"
-                style={{ backgroundColor: themeColors.primaryButton, color: '#FFFFFF' }}
+                style={{ backgroundColor: themeColors.primaryButton, color: themeColors.buttonText }}
               >
                 <span className="text-[10px] font-bold tracking-[0.3em] uppercase z-10">View Map</span>
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform z-10" />

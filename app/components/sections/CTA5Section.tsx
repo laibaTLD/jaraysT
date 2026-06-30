@@ -71,8 +71,8 @@ export const CTA5Section: React.FC<CTA5SectionProps> = ({ cta5Section, className
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.98 }}
               transition={{ duration: 0.7, delay: 0.18 }}
-              className="mt-12 inline-flex items-center justify-center rounded-full border border-white/15 bg-white/[0.08] px-10 py-4 text-xs font-semibold uppercase tracking-[0.35em] text-white shadow-[0_0_50px_rgba(0,0,0,0.45)] backdrop-blur-xl"
-              style={{ borderColor: `color-mix(in srgb, ${themeColors.primaryButton} 35%, transparent)` }}
+              className="mt-12 inline-flex items-center justify-center rounded-full border border-white/15 bg-white/[0.08] px-10 py-4 text-xs font-semibold uppercase tracking-[0.35em] shadow-[0_0_50px_rgba(0,0,0,0.45)] backdrop-blur-xl"
+              style={{ borderColor: `color-mix(in srgb, ${themeColors.primaryButton} 35%, transparent)`, color: themeColors.buttonText }}
             >
               {safe.primaryButton.label}
             </motion.a>

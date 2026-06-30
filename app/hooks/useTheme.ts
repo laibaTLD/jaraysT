@@ -40,7 +40,8 @@ export interface ThemeColors {
   inactive: string;
   inactiveLight: string;
   inactiveDark: string;
-
+  /** Text on primary CTA buttons — from builder `textOnDarkColor`, default white */
+  buttonText: string;
 }
 
 export interface ThemeFonts {
@@ -76,6 +77,7 @@ export function useThemeColors(): ThemeColors {
     inactive: 'var(--color-gray-400)',
     inactiveLight: 'var(--color-gray-300)',
     inactiveDark: 'var(--color-gray-600)',
+    buttonText: 'var(--wb-button-text, #ffffff)',
   };
 }
 

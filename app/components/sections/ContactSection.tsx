@@ -368,19 +368,19 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                     className="group flex w-full shrink-0 items-center justify-between rounded-full px-8 py-4 text-sm font-medium uppercase tracking-wide transition-all duration-500 hover:shadow-2xl"
                     style={{
                       backgroundColor: colors.primaryButton,
-                      color: '#ffffff',
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = colors.hoverActive;
-                      e.currentTarget.style.color = '#ffffff';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = colors.primaryButton;
-                      e.currentTarget.style.color = '#ffffff';
-                    }}
-                  >
-                    <span>Open Form</span>
-                    <ArrowRight size={18} className="text-white transition-transform group-hover:translate-x-0.5" />
+                  color: colors.buttonText,
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = colors.hoverActive;
+                  e.currentTarget.style.color = colors.buttonText;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = colors.primaryButton;
+                  e.currentTarget.style.color = colors.buttonText;
+                }}
+              >
+                <span>Open Form</span>
+                <ArrowRight size={18} className="transition-transform group-hover:translate-x-0.5" style={{ color: colors.buttonText }} />
                   </button>
                 )}
               </div>

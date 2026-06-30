@@ -58,7 +58,7 @@ export function useSectionTheme() {
         } as React.CSSProperties,
         primaryCta: {
           backgroundColor: colors.primaryButton,
-          color: 'var(--wb-text-on-dark, #fff)',
+          color: colors.buttonText,
         } as React.CSSProperties,
         statCircle: {
           background: `linear-gradient(135deg, ${colors.primaryButton}, ${colors.hoverActive})`,

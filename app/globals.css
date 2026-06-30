@@ -29,6 +29,7 @@
   --wb-text-main: #111827;
   --wb-text-secondary: #4b5563;
   --wb-text-on-dark: #ffffff;
+  --wb-button-text: #ffffff;
   --wb-text-on-dark-secondary: #d1d5db;
   /* Scrollbar tokens: white shades */
   --wb-scrollbar-track: rgba(255, 255, 255, 0.18);

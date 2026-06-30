@@ -1,4 +1,4 @@
-import type { Site } from '@/app/lib/types';
+import type { BlogPost, Page, Service, Site } from '@/app/lib/types';
 import { getPageHref, isPublishedPage } from '@/app/lib/siteContent';
 
 export const BUILDER_NO_CACHE_HEADERS = {
@@ -187,9 +187,9 @@ function formatLastMod(value?: string): string {
 export function buildGeneratedSitemapXml(
   site: Site,
   baseUrl: string,
-  pages: Array<{ slug?: string; pageType?: string; status?: string; updatedAt?: string; name?: string }>,
-  services: Array<{ slug?: string; status?: string; updatedAt?: string }>,
-  blogPosts: Array<{ slug?: string; status?: string; updatedAt?: string }>
+  pages: Page[],
+  services: Service[],
+  blogPosts: BlogPost[]
 ): string {
   const entries: SitemapEntry[] = [
     {
@@ -203,8 +203,8 @@ export function buildGeneratedSitemapXml(
   const seenLocs = new Set<string>([baseUrl]);
 
   for (const page of pages) {
-    if (!isPublishedPage(page as Parameters<typeof isPublishedPage>[0])) continue;
-    const href = getPageHref(page as Parameters<typeof getPageHref>[0]);
+    if (!isPublishedPage(page)) continue;
+    const href = getPageHref(page);
     const loc = href === '/' ? baseUrl : `${baseUrl}${href}`;
     if (seenLocs.has(loc)) continue;
     seenLocs.add(loc);

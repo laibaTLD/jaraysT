@@ -13,6 +13,7 @@ export type ThemeColors = {
   inactive: string;
   textOnDark: string;
   textOnDarkSecondary: string;
+  buttonText: string;
 };
 
 export const getThemeColors = (site: any): ThemeColors => ({
@@ -30,4 +31,5 @@ export const getThemeColors = (site: any): ThemeColors => ({
   inactive: site?.theme?.inactiveColorLight || 'var(--color-gray-400)',
   textOnDark: site?.theme?.textOnDarkColor || 'var(--wb-text-on-dark)',
   textOnDarkSecondary: site?.theme?.textOnDarkSecondaryColor || 'var(--wb-text-on-dark-secondary)',
+  buttonText: site?.theme?.textOnDarkColor || '#ffffff',
 });

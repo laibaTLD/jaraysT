@@ -194,7 +194,7 @@ export const CTA2Section: React.FC<CTA2SectionProps> = ({ cta2Section, className
                 className="group inline-flex items-center gap-4 rounded-full px-8 py-4 transition-transform duration-300 hover:scale-[1.02] active:scale-[0.98]"
                 style={{
                   backgroundColor: brandColor,
-                  color: '#ffffff',
+                  color: themeColors.buttonText,
                   fontFamily: themeFonts.body,
                 }}
               >

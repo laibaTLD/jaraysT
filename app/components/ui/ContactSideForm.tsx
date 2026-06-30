@@ -258,7 +258,7 @@ export const ContactSideForm: React.FC<ContactSideFormProps> = ({ isOpen, onClos
                 className="flex w-full items-center justify-center py-3.5 text-xs font-bold uppercase tracking-[0.35em] transition-all duration-300 hover:opacity-95 hover:shadow-lg active:scale-[0.995] disabled:opacity-55"
                 style={{
                   backgroundColor: colors.primaryButton,
-                  color: '#ffffff',
+                  color: colors.buttonText,
                 }}
               >
                 {isSubmitting ? 'Sending…' : submitMessage || 'Send'}

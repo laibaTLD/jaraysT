@@ -147,7 +147,7 @@ export function HomeButton({
       )}
       style={{
         backgroundColor: colors.primaryButton,
-        color: colors.darkPrimaryText,
+        color: colors.buttonText,
         fontFamily: fonts.body,
       }}
     >

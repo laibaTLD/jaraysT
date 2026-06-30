@@ -232,7 +232,7 @@ function GalleryLightbox({
                 type="button"
                 onClick={onPrev}
                 className="flex h-10 w-10 items-center justify-center rounded-full transition-opacity hover:opacity-80"
-                style={{ backgroundColor: colors.primaryButton, color: 'var(--wb-text-on-dark, #fff)' }}
+                style={{ backgroundColor: colors.primaryButton, color: colors.buttonText }}
                 aria-label="Previous image"
               >
                 <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -245,7 +245,7 @@ function GalleryLightbox({
                 type="button"
                 onClick={onNext}
                 className="flex h-10 w-10 items-center justify-center rounded-full transition-opacity hover:opacity-80"
-                style={{ backgroundColor: colors.primaryButton, color: 'var(--wb-text-on-dark, #fff)' }}
+                style={{ backgroundColor: colors.primaryButton, color: colors.buttonText }}
                 aria-label="Next image"
               >
                 <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

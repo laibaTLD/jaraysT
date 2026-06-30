@@ -130,8 +130,8 @@ export function HeroSection({ hero, page, className }: HeroSectionProps) {
             {ctaButton && (
               <a
                 href={ctaButton.href}
-                className={`${manrope.className} inline-block px-8 py-4 text-white font-medium text-sm tracking-wide uppercase transition-all duration-500 hover:brightness-110 hover:-translate-y-2 hover:scale-105 ${descriptionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-                style={{ backgroundColor: primary, transitionDelay: '700ms' }}
+                className={`${manrope.className} inline-block px-8 py-4 font-medium text-sm tracking-wide uppercase transition-all duration-500 hover:brightness-110 hover:-translate-y-2 hover:scale-105 ${descriptionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+                style={{ backgroundColor: primary, color: colors.buttonText, transitionDelay: '700ms' }}
               >
                 {ctaButton.label} →
               </a>

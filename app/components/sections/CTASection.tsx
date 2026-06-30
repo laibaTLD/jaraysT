@@ -319,9 +319,9 @@ export function CTASection({ ctaSection, page, className }: CTASectionProps) {
                   href={ctaButton.href}
                   className={cn(
                     manrope.className,
-                    'group relative inline-flex transform items-center overflow-hidden rounded-full px-10 py-5 text-sm font-medium uppercase tracking-wide text-white transition-all duration-500 hover:-translate-y-2 hover:scale-105'
+                    'group relative inline-flex transform items-center overflow-hidden rounded-full px-10 py-5 text-sm font-medium uppercase tracking-wide transition-all duration-500 hover:-translate-y-2 hover:scale-105'
                   )}
-                  style={{ backgroundColor: secondary }}
+                  style={{ backgroundColor: secondary, color: colors.buttonText }}
                 >
                   <span className="relative z-10 flex items-center">
                     {ctaButton.label}
@@ -350,9 +350,9 @@ export function CTASection({ ctaSection, page, className }: CTASectionProps) {
                   href={ctaButton.href}
                   className={cn(
                     manrope.className,
-                    'group relative inline-flex transform items-center overflow-hidden rounded-full px-10 py-5 text-sm font-medium uppercase tracking-wide text-white transition-all duration-500 hover:-translate-y-2 hover:scale-105'
+                    'group relative inline-flex transform items-center overflow-hidden rounded-full px-10 py-5 text-sm font-medium uppercase tracking-wide transition-all duration-500 hover:-translate-y-2 hover:scale-105'
                   )}
-                  style={{ backgroundColor: secondary }}
+                  style={{ backgroundColor: secondary, color: colors.buttonText }}
                 >
                   <span className="relative z-10 flex items-center">
                     {ctaButton.label}

@@ -65,8 +65,8 @@ export const CTA3Section: React.FC<CTA3SectionProps> = ({ cta3Section, className
                   href={safeCta.primaryButton.href}
                   className="inline-flex items-center justify-center px-8 py-4 rounded-full font-semibold transition-colors"
                   style={{
-                    backgroundColor: themeColors.pageBackground,
-                    color: themeColors.lightPrimaryText,
+                    backgroundColor: themeColors.primaryButton,
+                    color: themeColors.buttonText,
                   }}
                 >
                   {safeCta.primaryButton.label}

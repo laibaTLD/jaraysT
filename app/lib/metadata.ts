@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { Page, Site, Service, BlogPost, ServiceAreaPage } from './types'
 import { buildCanonicalUrl, tiptapToText, toHttpsExceptLocal } from './seo'
+import { resolveSiteBaseUrl } from '@/app/lib/webbuilder-server'
+import { resolveSiteFaviconIcons } from '@/app/lib/favicon'
 
 interface SEOData {
   title?: string
@@ -136,4 +138,25 @@ export function getBlogPostSeoData(blogPost: BlogPost): SEOData {
 
 export function getSiteSeoData(site: Site): SEOData {
   return normalizeRawSeo(site.seo as Record<string, unknown> | undefined)
+}
+
+export function resolveSiteIcons(site: Site): Metadata['icons'] | undefined {
+  return resolveSiteFaviconIcons(site)
+}
+
+export function buildSiteMetadata(site: Site): Metadata {
+  const icons = resolveSiteIcons(site)
+  const metadataBase = (() => {
+    try {
+      return new URL(resolveSiteBaseUrl())
+    } catch {
+      return undefined
+    }
+  })()
+
+  return {
+    ...(metadataBase ? { metadataBase } : {}),
+    ...generateMetadata(getSiteSeoData(site), site),
+    ...(icons ? { icons } : {}),
+  }
 }

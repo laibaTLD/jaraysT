@@ -13,7 +13,14 @@ export function resolveApiBaseUrl(): string {
 }
 
 export function resolveSiteBaseUrl(): string {
-  return (process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000').replace(/\/+$/, '');
+  const fromEnv = process.env.NEXT_PUBLIC_BASE_URL?.trim();
+  if (fromEnv) return fromEnv.replace(/\/+$/, '');
+
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`.replace(/\/+$/, '');
+  }
+
+  return (process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000').replace(/\/+$/, '');
 }
 
 export { resolveSchemaDocuments, buildDefaultSchemaDocuments } from '@/app/lib/builderSchema';

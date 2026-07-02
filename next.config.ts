@@ -46,10 +46,7 @@ const nextConfig: NextConfig = {
     const apiOrigin = remoteApi ?? 'http://localhost:5000/api';
 
     return [
-      {
-        source: '/api/:path*',
-        destination: `${apiOrigin}/:path*`,
-      },
+      // /api/* is handled by app/api/[...path]/route.ts (dev TLS-safe proxy).
       {
         source: '/uploads/:path*',
         destination: `${apiOrigin}/uploads/:path*`,

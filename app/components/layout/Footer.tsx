@@ -234,9 +234,9 @@ export function Footer() {
               <Image
                 src={logoImage || '/logo.png'}
                 alt={`${businessName} logo`}
-                width={240}
-                height={75}
-                className="h-16 w-auto object-contain sm:h-[4.5rem]"
+                width={360}
+                height={100}
+                className="h-24 w-auto object-contain sm:h-28"
               />
             </Link>
             <p className="max-w-sm text-sm leading-relaxed text-[var(--wb-text-secondary)]">

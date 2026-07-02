@@ -234,14 +234,14 @@ export function Header() {
   return (
     <nav className="fixed top-0 z-50 w-full border-b border-gray-100 bg-white/95 backdrop-blur-md">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-[4.5rem] items-center justify-between lg:h-20">
+        <div className="flex h-20 items-center justify-between lg:h-24">
           <Link href="/" className="flex shrink-0 items-center" onClick={closeMenu}>
             <Image
               src={logoSrc}
               alt={`${businessName} logo`}
-              width={260}
-              height={78}
-              className="h-14 w-auto object-contain sm:h-16"
+              width={320}
+              height={96}
+              className="h-16 w-auto object-contain sm:h-[4.5rem] lg:h-20"
               priority
             />
           </Link>

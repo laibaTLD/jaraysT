@@ -11,6 +11,7 @@ import {
   mergePageSeoWithSite,
 } from '@/app/lib/metadata';
 import { fetchPublicCollection, fetchPublicSite, resolveApiBaseUrl } from '@/app/lib/webbuilder-server';
+import { upstreamFetch } from '@/app/lib/upstream-fetch';
 
 const FALLBACK_METADATA: Metadata = {
   title: 'Web Builder Site',
@@ -146,7 +147,7 @@ export async function buildMetadataForServiceArea(
 
   try {
     const site = await fetchPublicSite();
-    const response = await fetch(
+    const response = await upstreamFetch(
       `${resolveApiBaseUrl()}/public/sites/${site.slug}/service-areas/by-service/${serviceSlug}/${areaSlug}`,
       { cache: 'no-store', next: { revalidate: 0 } }
     );

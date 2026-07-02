@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo } from 'react';
 import { useWebBuilder } from '@/app/providers/WebBuilderProvider';
-import { resolveSchemaDocuments, resolveSiteBaseUrl } from '@/app/lib/webbuilder-server';
+import { resolveSchemaDocuments, resolveSiteBaseUrl } from '@/app/lib/builderSchema';
 
 const SCRIPT_ID = 'builder-schema-jsonld';
 

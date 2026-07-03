@@ -138,14 +138,13 @@ export const ServiceOverview: React.FC<ServiceOverviewProps> = ({ overview, clas
       {hasTextBlock && (
         <div
           className={cn(
-            'grid min-h-[100svh]',
-            headerImage ? 'lg:grid-cols-2' : 'lg:grid-cols-1'
+            headerImage ? 'flex flex-col lg:flex-row lg:items-stretch' : 'block'
           )}
         >
           <header
             className={cn(
-              'flex flex-col justify-center px-6 md:px-12 lg:px-16 xl:px-20 py-16 sm:py-20',
-              'min-h-[100svh]',
+              'flex flex-col justify-start px-6 md:px-12 lg:px-16 xl:px-20 py-12 sm:py-14 lg:py-16',
+              headerImage && 'lg:flex-1 lg:min-w-0',
               textOnlyHero && 'mx-auto w-full max-w-4xl'
             )}
           >
@@ -194,16 +193,14 @@ export const ServiceOverview: React.FC<ServiceOverviewProps> = ({ overview, clas
           </header>
 
           {headerImage && (
-            <div className="relative min-h-[45vh] lg:min-h-[100svh] order-first lg:order-none">
-              <div className="absolute inset-0 overflow-hidden">
-                <OptimizedImage
-                  src={headerImage}
-                  alt={section.image?.altText?.trim() || titleText || 'Service overview'}
-                  fill
-                  sizes={IMAGE_SIZES.sectionWide}
-                  className="object-cover"
-                />
-              </div>
+            <div className="relative order-first aspect-[4/3] sm:aspect-[16/10] lg:order-2 lg:aspect-auto lg:min-h-0 lg:min-w-0 lg:flex-1">
+              <OptimizedImage
+                src={headerImage}
+                alt={section.image?.altText?.trim() || titleText || 'Service overview'}
+                fill
+                sizes={IMAGE_SIZES.sectionWide}
+                className="object-cover"
+              />
             </div>
           )}
         </div>

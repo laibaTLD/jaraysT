@@ -16,6 +16,9 @@ import { buildSiteMetadata } from '@/app/lib/metadata';
 const FALLBACK_METADATA: Metadata = {
   title: 'Web Builder Site',
   description: 'Generated site using Web Builder',
+  verification: {
+    google: '6iY7eJcwvueNUp21uCb2DKc46VO7UFOdxSmldLtwFKs',
+  },
 };
 
 export async function generateMetadata(): Promise<Metadata> {

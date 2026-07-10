@@ -158,5 +158,8 @@ export function buildSiteMetadata(site: Site): Metadata {
     ...(metadataBase ? { metadataBase } : {}),
     ...generateMetadata(getSiteSeoData(site), site),
     ...(icons ? { icons } : {}),
+    verification: {
+      google: '6iY7eJcwvueNUp21uCb2DKc46VO7UFOdxSmldLtwFKs',
+    },
   }
 }

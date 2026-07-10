@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import './globals.css';
 import { WebBuilderProvider } from '@/app/providers/WebBuilderProvider';
 import { ErrorBoundary } from '@/app/components/ui/ErrorBoundary';
@@ -12,6 +13,8 @@ import { BuilderSchemaJsonLdClient } from '@/app/components/seo/BuilderSchemaJso
 import { BuilderFaviconClient } from '@/app/components/seo/BuilderFaviconClient';
 import { fetchPublicSite } from '@/app/lib/webbuilder-server';
 import { buildSiteMetadata } from '@/app/lib/metadata';
+
+const GA_MEASUREMENT_ID = 'G-GSCF0VC5DQ';
 
 const FALLBACK_METADATA: Metadata = {
   title: 'Web Builder Site',
@@ -38,6 +41,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body suppressHydrationWarning className="antialiased">
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_MEASUREMENT_ID}');
+          `}
+        </Script>
         <ErrorBoundary>
           <WebBuilderProvider>
             <BuilderFaviconClient />

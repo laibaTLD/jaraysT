@@ -54,7 +54,8 @@ export const ServiceDetail: React.FC<ServiceDetailProps> = ({
         <div 
             className={cn('min-h-screen', className)} 
             style={{ 
-                backgroundColor: themeColors.pageBackground
+                backgroundColor: themeColors.pageBackground,
+                fontFamily: themeFonts.body || 'var(--wb-body-font, inherit)',
             }}
         >
             {/* Elegant Top Banner */}

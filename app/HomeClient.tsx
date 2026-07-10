@@ -17,10 +17,9 @@ import { CTASection } from '@/app/components/sections/CTASection';
 import { GallerySection } from '@/app/components/sections/GallerySection';
 import { ServingAreasSection } from '@/app/components/sections/ServingAreasSection';
 import { getThemeColors } from '@/app/lib/themeBuilder';
-import { PageContentLoader } from '@/app/components/ui/PageContentLoader';
 
 export default function HomeClient() {
-  const { site, pages, loading, error } = useWebBuilder();
+  const { site, pages, error } = useWebBuilder();
 
   // Get theme colors from site using the new dynamic CSS variable system
 
@@ -32,9 +31,7 @@ export default function HomeClient() {
     body: site?.theme?.bodyFont,
   };
 
-  if (loading) {
-    return <PageContentLoader />;
-  }
+  const displayPage = pages.find((p: Page) => p.pageType === 'home');
 
   if (error && !site) {
     return (
@@ -71,8 +68,6 @@ export default function HomeClient() {
       </div>
     );
   }
-
-  const displayPage = pages.find((p: Page) => p.pageType === 'home');
 
   if (!displayPage) {
     return (

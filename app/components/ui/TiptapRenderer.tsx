@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { type CSSProperties } from 'react';
 import { cn, getImageSrc } from '@/app/lib/utils';
 import { OptimizedImage, IMAGE_SIZES } from '@/app/components/ui/OptimizedImage';
 import { TiptapContent, TiptapAnyNode, TiptapMark } from '@/app/lib/tiptap-types';
@@ -224,22 +224,27 @@ const renderNode = (node: any, key?: React.Key): React.ReactNode => {
   if (normalized.type === 'heading') {
     const level = normalized.attrs?.level || 1;
     const children = normalized.content?.map((child: any, i: number) => renderNode(child, i));
-    
+    const headingStyle = { fontFamily: 'var(--wb-heading-font, Georgia, serif)' } as CSSProperties;
+
     switch (level) {
-      case 1: return <h1 key={key} className="text-4xl font-bold">{children}</h1>;
-      case 2: return <h2 key={key} className="text-3xl font-bold">{children}</h2>;
-      case 3: return <h3 key={key} className="text-2xl font-bold">{children}</h3>;
-      case 4: return <h4 key={key} className="text-xl font-bold">{children}</h4>;
-      case 5: return <h5 key={key} className="text-lg font-bold">{children}</h5>;
-      case 6: return <h6 key={key} className="text-base font-bold">{children}</h6>;
-      default: return <h1 key={key} className="text-4xl font-bold">{children}</h1>;
+      case 1: return <h1 key={key} className="text-4xl font-bold" style={headingStyle}>{children}</h1>;
+      case 2: return <h2 key={key} className="text-3xl font-bold" style={headingStyle}>{children}</h2>;
+      case 3: return <h3 key={key} className="text-2xl font-bold" style={headingStyle}>{children}</h3>;
+      case 4: return <h4 key={key} className="text-xl font-bold" style={headingStyle}>{children}</h4>;
+      case 5: return <h5 key={key} className="text-lg font-bold" style={headingStyle}>{children}</h5>;
+      case 6: return <h6 key={key} className="text-base font-bold" style={headingStyle}>{children}</h6>;
+      default: return <h1 key={key} className="text-4xl font-bold" style={headingStyle}>{children}</h1>;
     }
   }
   
   // Handle paragraph
   if (normalized.type === 'paragraph') {
     const children = normalized.content?.map((child: any, i: number) => renderNode(child, i));
-    return <p key={key}>{children}</p>;
+    return (
+      <p key={key} style={{ fontFamily: 'var(--wb-body-font, inherit)' }}>
+        {children}
+      </p>
+    );
   }
 
   // Handle image

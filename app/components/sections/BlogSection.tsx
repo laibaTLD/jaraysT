@@ -9,7 +9,6 @@ import { getImageSrc, cn } from '@/app/lib/utils';
 import { useWebBuilder } from '@/app/providers/WebBuilderProvider';
 import { useScrollAnimation } from '@/app/hooks/useScrollAnimation';
 import { useSectionTheme } from '@/app/hooks/useSectionTheme';
-import { CardLoader } from '@/app/components/ui/SkeletonLoader';
 import { tiptapToText } from '@/app/lib/seo';
 
 type BlogSectionInput = NonNullable<Page['blogSection']> & {
@@ -136,22 +135,7 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ blogSection, className
   const showDate = Boolean(sectionData.showDate);
 
   if (loading && blogPosts.length === 0) {
-    return (
-      <section className={cn('relative py-20', className)} id="blog" style={{ backgroundColor: colors.pageBackground }}>
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-8 lg:grid-cols-12">
-            <div className="aspect-[16/10] animate-pulse rounded-3xl lg:col-span-7" style={styles.imagePlaceholder} />
-            <div className="space-y-6 lg:col-span-5">
-              {[1, 2].map((i) => (
-                <div key={i} className="rounded-3xl border p-4" style={styles.card}>
-                  <CardLoader />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-    );
+    return null;
   }
 
   if (displayPosts.length === 0 && !hasTitle && !hasDescription) {

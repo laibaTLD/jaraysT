@@ -6,10 +6,9 @@ import { Footer } from '@/app/components/layout/Footer';
 import { HeroSection } from '@/app/components/sections/HeroSection';
 import { ServicesSection } from '@/app/components/sections/ServicesSection';
 import { getThemeColors } from '@/app/lib/themeBuilder';
-import { PageContentLoader } from '@/app/components/ui/PageContentLoader';
 
 export default function ServicesPage() {
-  const { site, pages, loading, error } = useWebBuilder();
+  const { site, pages, error } = useWebBuilder();
 
   const themeColors = getThemeColors(site);
 
@@ -19,9 +18,7 @@ export default function ServicesPage() {
     body: site?.theme?.bodyFont,
   };
 
-  if (loading) {
-    return <PageContentLoader />;
-  }
+  const servicesPage = pages.find((p: Page) => p.pageType === 'service-list');
 
   if (error && !site) {
     return (
@@ -59,9 +56,7 @@ export default function ServicesPage() {
     );
   }
 
-  const displayPage = pages.find((p: Page) => p.pageType === 'service-list');
-
-  if (!displayPage) {
+  if (!servicesPage) {
     return (
       <div 
         className="min-h-screen flex flex-col items-center justify-center p-4"
@@ -98,8 +93,8 @@ export default function ServicesPage() {
     >
 
       <main>
-        <HeroSection hero={displayPage.hero} page={displayPage} />
-        <ServicesSection servicesSection={displayPage.servicesSection} />
+        <HeroSection hero={servicesPage.hero} page={servicesPage} />
+        <ServicesSection servicesSection={servicesPage.servicesSection} />
       </main>
 
       <Footer />

@@ -4,10 +4,17 @@ import React, { createContext, useContext, useEffect, useState, ReactNode } from
 import { Site, Page, Service, BlogPost, Project } from '@/app/lib/types';
 import { siteApi, pageApi, serviceApi, blogApi, projectApi, testimonialApi, serviceAreaApi } from '@/app/lib/api';
 
-// Site slug from environment variable
 const SITE_SLUG = process.env.NEXT_PUBLIC_WEBBUILDER_SITE_SLUG;
 
-/** Parsed poll interval in ms; 0 disables polling. Defaults avoid API rate limits in production. */
+export type WebBuilderInitialData = {
+  site: Site;
+  pages: Page[];
+  services: Service[];
+  blogPosts: BlogPost[];
+  projects: Project[];
+  serviceAreaPages: unknown[];
+};
+
 function readPollIntervalMs(envKey: string, defaultMs: number): number {
   const raw = process.env[envKey];
   if (raw === undefined || raw === '') return defaultMs;
@@ -17,21 +24,15 @@ function readPollIntervalMs(envKey: string, defaultMs: number): number {
 
 const isProdBuild = process.env.NODE_ENV === 'production';
 
-/** Site/theme refresh (formerly every 3s — far too aggressive for deployed APIs). */
 const SITE_POLL_INTERVAL_MS = readPollIntervalMs(
   'NEXT_PUBLIC_WEBBUILDER_SITE_POLL_INTERVAL_MS',
   isProdBuild ? 60_000 : 15_000
 );
 
-/** Pages, projects, services refresh (formerly every 5s each). */
 const CONTENT_POLL_INTERVAL_MS = readPollIntervalMs(
   'NEXT_PUBLIC_WEBBUILDER_CONTENT_POLL_INTERVAL_MS',
   isProdBuild ? 0 : 60_000
 );
-
-
-
-
 
 interface WebBuilderContextType {
   site: Site | null;
@@ -60,61 +61,32 @@ export const useWebBuilder = () => {
 
 interface WebBuilderProviderProps {
   children: ReactNode;
+  initialData?: WebBuilderInitialData | null;
 }
 
-export const WebBuilderProvider: React.FC<WebBuilderProviderProps> = ({ children }) => {
-  const [site, setSite] = useState<Site | null>(null);
-  const [pages, setPages] = useState<Page[]>([]);
-  const [services, setServices] = useState<Service[]>([]);
-  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [testimonials, setTestimonials] = useState<{ title?: string; description?: string; testimonials: any[] } | null>(null);
-  const [serviceAreaPages, setServiceAreaPages] = useState<any[]>([]);
+export const WebBuilderProvider: React.FC<WebBuilderProviderProps> = ({
+  children,
+  initialData = null,
+}) => {
+  const hasBootstrap = Boolean(initialData?.site);
+
+  const [site, setSite] = useState<Site | null>(initialData?.site ?? null);
+  const [pages, setPages] = useState<Page[]>(initialData?.pages ?? []);
+  const [services, setServices] = useState<Service[]>(initialData?.services ?? []);
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>(initialData?.blogPosts ?? []);
+  const [projects, setProjects] = useState<Project[]>(initialData?.projects ?? []);
+  const [testimonials, setTestimonials] = useState<{
+    title?: string;
+    description?: string;
+    testimonials: any[];
+  } | null>(null);
+  const [serviceAreaPages, setServiceAreaPages] = useState<any[]>(
+    initialData?.serviceAreaPages ?? []
+  );
   const [currentPage, setCurrentPage] = useState<Page | null>(null);
-  const [loading, setLoading] = useState(true);
+  // SSR bootstrap means first paint already has data — never block on a loading screen.
+  const [loading, setLoading] = useState(!hasBootstrap);
   const [error, setError] = useState<string | null>(null);
-
-  const loadSite = async (slug: string) => {
-    try {
-      setLoading(true);
-      setError(null);
-      
-      // Use real API when backend is available
-      const siteData = await siteApi.getSiteBySlug(slug);
-      setSite(siteData);
-      
-      await Promise.all([
-        loadPages(siteData.slug),
-        loadServicesBySiteSlug(siteData.slug),
-        loadBlogPosts(siteData.slug),
-        loadProjects(siteData.slug),
-        loadTestimonials(siteData.slug),
-        loadServiceAreaPages(siteData.slug),
-      ]);
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Failed to load site';
-      setError(
-        msg.includes('500')
-          ? 'The site builder API is temporarily unavailable. Refresh the page or try again shortly.'
-          : msg
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const loadPage = async (siteSlug: string, pageSlug: string) => {
-    try {
-      setLoading(true);
-      setError(null);
-      const pageData = await pageApi.getPageBySlug(siteSlug, pageSlug);
-      setCurrentPage(pageData);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load page');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const loadPages = async (siteSlug: string) => {
     try {
@@ -173,17 +145,83 @@ export const WebBuilderProvider: React.FC<WebBuilderProviderProps> = ({ children
     }
   };
 
-  // Auto-load site from env variable on mount
+  /** Full load used only when SSR bootstrap is missing. */
+  const loadSite = async (slug: string) => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const siteData = await siteApi.getSiteBySlug(slug);
+      setSite(siteData);
+
+      await loadPages(siteData.slug);
+      setLoading(false);
+
+      void Promise.all([
+        loadServicesBySiteSlug(siteData.slug),
+        loadBlogPosts(siteData.slug),
+        loadProjects(siteData.slug),
+        loadTestimonials(siteData.slug),
+        loadServiceAreaPages(siteData.slug),
+      ]);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Failed to load site';
+      setError(
+        msg.includes('500')
+          ? 'The site builder API is temporarily unavailable. Refresh the page or try again shortly.'
+          : msg
+      );
+      setLoading(false);
+    }
+  };
+
+  /** Background refresh — never toggles loading (keeps UI painted). */
+  const refreshInBackground = async (slug: string) => {
+    try {
+      const siteData = await siteApi.getSiteBySlug(slug, { silent: true });
+      setSite(siteData);
+      void Promise.all([
+        loadPages(siteData.slug),
+        loadServicesBySiteSlug(siteData.slug),
+        loadBlogPosts(siteData.slug),
+        loadProjects(siteData.slug),
+        loadTestimonials(siteData.slug),
+        loadServiceAreaPages(siteData.slug),
+      ]);
+    } catch {
+      /* ignore background refresh errors */
+    }
+  };
+
+  const loadPage = async (siteSlug: string, pageSlug: string) => {
+    try {
+      setError(null);
+      const pageData = await pageApi.getPageBySlug(siteSlug, pageSlug);
+      setCurrentPage(pageData);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load page');
+    }
+  };
+
   useEffect(() => {
     if (!SITE_SLUG) {
-      setError('NEXT_PUBLIC_WEBBUILDER_SITE_SLUG environment variable is not defined. Please check your .env file.');
+      setError(
+        'NEXT_PUBLIC_WEBBUILDER_SITE_SLUG environment variable is not defined. Please check your .env file.'
+      );
       setLoading(false);
       return;
     }
-    loadSite(SITE_SLUG);
+
+    if (hasBootstrap) {
+      // Soft refresh only — content already painted from SSR.
+      void refreshInBackground(SITE_SLUG);
+      return;
+    }
+
+    void loadSite(SITE_SLUG);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Poll site for builder edits (theme, service areas, business info, etc.)
   useEffect(() => {
     if (!site?.slug || SITE_POLL_INTERVAL_MS <= 0) return;
 
@@ -220,7 +258,9 @@ export const WebBuilderProvider: React.FC<WebBuilderProviderProps> = ({ children
 
     const intervalId = setInterval(async () => {
       try {
-        const projectsData = await projectApi.getProjectsBySite(site.slug, undefined, { silent: true });
+        const projectsData = await projectApi.getProjectsBySite(site.slug, undefined, {
+          silent: true,
+        });
         setProjects((prevProjects) =>
           JSON.stringify(prevProjects) !== JSON.stringify(projectsData)
             ? projectsData
@@ -303,8 +343,6 @@ export const WebBuilderProvider: React.FC<WebBuilderProviderProps> = ({ children
   };
 
   return (
-    <WebBuilderContext.Provider value={contextValue}>
-      {children}
-    </WebBuilderContext.Provider>
+    <WebBuilderContext.Provider value={contextValue}>{children}</WebBuilderContext.Provider>
   );
 };

@@ -11,7 +11,7 @@ import { HeroIntroProvider } from '@/app/providers/HeroIntroProvider';
 import { Header } from '@/app/components/layout/Header';
 import { BuilderSchemaJsonLdClient } from '@/app/components/seo/BuilderSchemaJsonLdClient';
 import { BuilderFaviconClient } from '@/app/components/seo/BuilderFaviconClient';
-import { fetchPublicSite } from '@/app/lib/webbuilder-server';
+import { fetchPublicSite, fetchWebBuilderBootstrap } from '@/app/lib/webbuilder-server';
 import { buildSiteMetadata } from '@/app/lib/metadata';
 
 const GA_MEASUREMENT_ID = 'G-GSCF0VC5DQ';
@@ -33,11 +33,13 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const initialData = await fetchWebBuilderBootstrap();
+
   return (
     <html lang="en">
       <body suppressHydrationWarning className="antialiased">
@@ -54,7 +56,7 @@ export default function RootLayout({
           `}
         </Script>
         <ErrorBoundary>
-          <WebBuilderProvider>
+          <WebBuilderProvider initialData={initialData}>
             <BuilderFaviconClient />
             <BuilderSchemaJsonLdClient />
             <LanguageProvider>

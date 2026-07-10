@@ -1,4 +1,4 @@
-import type { BlogPost, Page, Service, Site } from '@/app/lib/types';
+import type { BlogPost, Page, Project, Service, Site } from '@/app/lib/types';
 import { getPageHref, isPublishedPage } from '@/app/lib/siteContent';
 import { resolveUpstreamApiOrigin, upstreamFetch } from '@/app/lib/upstream-fetch';
 
@@ -51,6 +51,51 @@ export async function fetchPublicSite(siteSlug?: string): Promise<Site> {
 
   const payload = await response.json();
   return unwrapApiPayload<Site>(payload);
+}
+
+export type WebBuilderBootstrap = {
+  site: Site;
+  pages: Page[];
+  services: Service[];
+  blogPosts: BlogPost[];
+  projects: Project[];
+  serviceAreaPages: unknown[];
+};
+
+/** Server-side bootstrap so first paint has site + pages (no client loading blank). */
+export async function fetchWebBuilderBootstrap(
+  siteSlug?: string
+): Promise<WebBuilderBootstrap | null> {
+  const slug = siteSlug || process.env.NEXT_PUBLIC_WEBBUILDER_SITE_SLUG;
+  if (!slug) return null;
+
+  try {
+    const site = await fetchPublicSite(slug);
+    const sitePath = `/public/sites/${site.slug}`;
+
+    const [pages, services, blogPosts, projects, serviceAreaPages] = await Promise.all([
+      fetchPublicCollection<Page>(`${sitePath}/pages`),
+      fetchPublicCollection<Service>(`${sitePath}/services`),
+      fetchPublicCollection<BlogPost>(`${sitePath}/blog`),
+      fetchPublicCollection<Project>(`${sitePath}/projects`),
+      fetchPublicCollection<unknown>(`${sitePath}/service-area-pages`),
+    ]);
+
+    return {
+      site,
+      pages,
+      services,
+      blogPosts,
+      projects,
+      serviceAreaPages,
+    };
+  } catch (err) {
+    console.warn(
+      '[fetchWebBuilderBootstrap]',
+      err instanceof Error ? err.message : err
+    );
+    return null;
+  }
 }
 
 export async function fetchPublicCollection<T>(path: string): Promise<T[]> {

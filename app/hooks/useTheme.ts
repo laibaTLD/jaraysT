@@ -84,8 +84,8 @@ export function useThemeColors(): ThemeColors {
 export function useThemeFonts(): ThemeFonts {
   const { site } = useWebBuilder();
   return {
-    heading: site?.theme?.headingFont,
-    body: site?.theme?.bodyFont,
+    heading: site?.theme?.headingFont || 'var(--wb-heading-font, Georgia, serif)',
+    body: site?.theme?.bodyFont || 'var(--wb-body-font, inherit)',
   };
 }
 

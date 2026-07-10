@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { cn } from '@/app/lib/utils';
-import { useThemeColors } from '@/app/hooks/useTheme';
+import { useThemeColors, useThemeFonts } from '@/app/hooks/useTheme';
 import { HeroSection } from './serving-area-detail-sections/Hero';
 import { Highlights } from './serving-area-detail-sections/Highlights';
 import { About } from './serving-area-detail-sections/About';
@@ -43,6 +43,7 @@ export const ServingAreasdetailSection: React.FC<ServingAreasdetailSectionProps>
   className,
 }) => {
   const themeColors = useThemeColors();
+  const themeFonts = useThemeFonts();
   const whyChooseUs = data.whyChooseUs ?? data.about;
   const servingAreasConfig = stripStaticAreasFromConfig(data.servingAreas);
   const servingAreasEnabled =
@@ -53,7 +54,13 @@ export const ServingAreasdetailSection: React.FC<ServingAreasdetailSectionProps>
       : true;
 
   return (
-    <div className={cn('w-full', className)} style={{ backgroundColor: themeColors.pageBackground }}>
+    <div
+      className={cn('w-full', className)}
+      style={{
+        backgroundColor: themeColors.pageBackground,
+        fontFamily: themeFonts.body,
+      }}
+    >
       {data.hero ? <HeroSection hero={data.hero} /> : null}
       {data.highlights ? <Highlights highlights={data.highlights} /> : null}
       {data.about ? <About about={data.about} /> : null}

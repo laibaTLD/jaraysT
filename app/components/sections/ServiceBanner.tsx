@@ -77,9 +77,9 @@ export const ServiceBanner: React.FC<ServiceBannerProps> = ({ service }) => {
                 </div>
 
                 <h1
-                    className="text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-light uppercase tracking-tight text-white leading-[0.95] mb-6"
+                    className="mb-6 text-4xl font-bold leading-tight tracking-tight text-white md:text-5xl lg:text-6xl xl:text-7xl"
                     style={{ 
-                        fontFamily: themeFonts.heading,
+                        fontFamily: themeFonts.heading || 'var(--wb-heading-font, Georgia, serif)',
                         textShadow: '0 4px 30px rgba(0,0,0,0.3)' 
                     }}
                 >
@@ -88,8 +88,8 @@ export const ServiceBanner: React.FC<ServiceBannerProps> = ({ service }) => {
                 
                 {service.shortDescription && (
                     <div
-                        className="text-base md:text-lg lg:text-xl text-white/80 max-w-2xl mx-auto font-light tracking-wide leading-relaxed"
-                        style={{ fontFamily: themeFonts.body }}
+                        className="mx-auto max-w-2xl text-base font-normal leading-relaxed tracking-wide text-white/80 md:text-lg lg:text-xl"
+                        style={{ fontFamily: themeFonts.body || 'var(--wb-body-font, inherit)' }}
                     >
                         {typeof service.shortDescription === 'string'
                             ? service.shortDescription
